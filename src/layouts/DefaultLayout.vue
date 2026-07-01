@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="layout">
     <Navbar />
 
-    <main class="container">
+    <main class="content">
       <slot />
     </main>
   </div>
@@ -13,9 +13,16 @@ import Navbar from '../components/Navbar.vue'
 </script>
 
 <style scoped>
-.container {
-  max-width: 1100px;
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 20px;
 }
 </style>

@@ -2,13 +2,11 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 
-// CSS global (inclui variables.css, resets, etc.)
-import './assets/css/variables.css'
+import './styles/reset.css'
+import './styles/variables.css'
+import './styles/global.css'
+import './styles/animations.css'
 
-const app = createApp(App)
-
-// plugins
-app.use(router)
-
-// mount
-app.mount('#app')
+createApp(App)
+  .use(router)
+  .mount('#app')

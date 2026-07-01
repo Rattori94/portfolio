@@ -1,19 +1,38 @@
 <template>
   <DefaultLayout>
-    <section class="hero fade">
-      <h2>Olá, eu sou Desenvolvedor Front-end</h2>
-      <p>Construo interfaces modernas com Vue.js</p>
-    </section>
+
+    <Hero />
+
+    <About />
+
+    <Skills />
+
+    <Projects />
+
+    <Contact />
+
+    <Footer />
+
   </DefaultLayout>
 </template>
 
 <script setup>
 import DefaultLayout from '../layouts/DefaultLayout.vue'
+
+import Hero from '../components/Hero.vue'
+import About from '../components/About.vue'
+import Skills from '../components/Skills.vue'
+import Projects from '../components/Projects.vue'
+import Contact from '../components/Contact.vue'
+import Footer from '../components/Footer.vue'
 </script>
 
 <style scoped>
-.hero {
-  text-align: center;
-  padding: 80px 0;
+
+:deep(section){
+
+scroll-margin-top:90px;
+
 }
+
 </style>
