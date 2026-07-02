@@ -48,7 +48,7 @@
           </a>
 
           <a
-            href="/portfolio-vue/public/curriculo_rafael.pdf"
+            href="/curriculo_rafael.pdf"
             class="btn outline"
             download
           >
