@@ -5,8 +5,13 @@
 
       <!-- LOGO -->
       <a href="#" class="logo" @click.prevent="scrollTo('home')">
-        <span class="mark">&lt;/&gt;</span>
-        Rafael A. Vettori
+
+        <img src="../../favicon/favicon.png" alt="Logo" class="logo-img" />
+
+        <span class="logo-text">
+          Rafael A. Vettori
+        </span>
+
       </a>
 
       <!-- DESKTOP NAV -->
@@ -33,7 +38,7 @@
 
     </div>
 
-    <!-- MOBILE MENU (Apple-style overlay + animation) -->
+    <!-- MOBILE MENU OVERLAY -->
     <Transition name="overlay">
       <div
         v-if="menuOpen"
@@ -48,7 +53,7 @@
               <i class="fa-solid fa-xmark"></i>
             </button>
 
-            <!-- LINKS (stagger via CSS) -->
+            <!-- LINKS -->
             <nav class="mobile-links">
 
               <a
@@ -106,7 +111,6 @@ const scrollTo = (id) => {
   menuOpen.value = false
 }
 
-/* MOBILE NAV GO */
 const go = (id) => {
   scrollTo(id)
 }
@@ -141,23 +145,17 @@ const handleScroll = () => {
   }
 }
 
-/* =========================
-   BODY LOCK (important UX)
-========================= */
+/* BODY LOCK */
 watch(menuOpen, (open) => {
   document.body.style.overflow = open ? 'hidden' : ''
 })
 
-/* INIT */
 onMounted(() => {
-
   const saved = localStorage.getItem('theme')
 
   if (saved) {
     theme.value = saved
     document.documentElement.setAttribute('data-theme', saved)
-  } else {
-    document.documentElement.setAttribute('data-theme', 'dark')
   }
 
   window.addEventListener('scroll', handleScroll)
@@ -185,8 +183,7 @@ onUnmounted(() => {
 
   background: rgba(8, 11, 20, 0.35);
   backdrop-filter: blur(10px);
-
-  transition: 0.3s ease;
+  transition: .3s ease;
 }
 
 .scrolled {
@@ -211,15 +208,28 @@ onUnmounted(() => {
    LOGO
 ========================= */
 .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  text-decoration: none;
   font-weight: 700;
   color: var(--text);
-  display: flex;
-  gap: 10px;
-  text-decoration: none;
 }
 
-.mark {
-  color: var(--secondary);
+.logo-img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  transition: transform .3s ease;
+}
+
+.logo:hover .logo-img {
+  transform: rotate(-6deg) scale(1.05);
+}
+
+.logo-text {
+  display: inline;
 }
 
 /* =========================
@@ -272,23 +282,43 @@ onUnmounted(() => {
 }
 
 /* =========================
-   MOBILE OVERLAY (Apple style blur)
+   MOBILE
+========================= */
+.hamburger {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .nav {
+    display: none;
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  .logo-text {
+    display: none;
+  }
+}
+
+/* =========================
+   OVERLAY (Apple blur)
 ========================= */
 .mobile-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.35);
 
+  background: rgba(0,0,0,.35);
   backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
 
   z-index: 2000;
 }
 
-/* OVERLAY FADE */
+/* fade */
 .overlay-enter-active,
 .overlay-leave-active {
-  transition: opacity .35s ease;
+  transition: opacity .3s ease;
 }
 
 .overlay-enter-from,
@@ -297,7 +327,7 @@ onUnmounted(() => {
 }
 
 /* =========================
-   MOBILE SHEET
+   SHEET
 ========================= */
 .mobile-menu {
   position: absolute;
@@ -314,7 +344,7 @@ onUnmounted(() => {
   flex-direction: column;
 }
 
-/* SLIDE ANIMATION */
+/* slide */
 .sheet-enter-active,
 .sheet-leave-active {
   transition: transform .35s cubic-bezier(.2,.9,.2,1), opacity .35s;
@@ -326,7 +356,9 @@ onUnmounted(() => {
   opacity: 0;
 }
 
-/* CLOSE BUTTON */
+/* =========================
+   CLOSE BUTTON
+========================= */
 .close-btn {
   align-self: flex-end;
   background: transparent;
@@ -337,7 +369,7 @@ onUnmounted(() => {
 }
 
 /* =========================
-   MOBILE LINKS (STAGGER ANIMATION)
+   MOBILE LINKS (STAGGER)
 ========================= */
 .mobile-links {
   display: flex;
@@ -366,19 +398,6 @@ onUnmounted(() => {
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-@media (max-width: 900px) {
-  .nav {
-    display: none;
-  }
-
-  .hamburger {
-    display: block;
   }
 }
 
