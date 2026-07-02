@@ -44,7 +44,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import MobileMenu from './MobileMenu.vue'
+import MobileMenu from '../components/MobileMenu.vue'
 
 const menuOpen = ref(false)
 const scrolled = ref(false)
