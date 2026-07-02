@@ -25,21 +25,48 @@ section{
     margin:auto;
 }
 
+/* ===========================
+   BOTÕES (SISTEMA GLOBAL)
+=========================== */
+
 .btn{
     display:inline-flex;
     align-items:center;
     justify-content:center;
     gap:8px;
+
     padding:14px 28px;
-    border:none;
     border-radius:999px;
+    border:none;
+
     background:linear-gradient(90deg,var(--primary),var(--secondary));
-    color:#fff !important;
+
+    color:#fff;
     text-decoration:none;
+
     font-weight:600;
     line-height:1;
+
     cursor:pointer;
+
     transition:transform .3s, box-shadow .3s, opacity .3s;
+}
+
+/* força consistência em links */
+.btn:link,
+.btn:visited,
+.btn:hover,
+.btn:active,
+.btn:focus{
+    color:#fff;
+    text-decoration:none;
+}
+
+/* ícones dentro do botão */
+.btn i,
+.btn svg,
+.btn span{
+    color:inherit;
 }
 
 .btn:hover{
@@ -47,18 +74,38 @@ section{
     box-shadow:var(--shadow);
 }
 
-.btn:visited,
-.btn:active,
-.btn:focus{
-    color:#fff !important;
-    text-decoration:none;
+/* ===========================
+   BOTÃO OUTLINE
+=========================== */
+
+.btn.outline{
+    background:transparent;
+    border:2px solid var(--primary);
+    color:var(--primary);
 }
 
-.btn svg,
-.btn i,
-.btn span{
-    color:inherit;
+.btn.outline:link,
+.btn.outline:visited,
+.btn.outline:focus{
+    color:var(--primary);
 }
+
+.btn.outline:hover{
+    background:var(--primary);
+    color:#fff;
+    transform:translateY(-4px);
+    box-shadow:var(--shadow);
+}
+
+.btn.outline:hover i,
+.btn.outline:hover svg,
+.btn.outline:hover span{
+    color:#fff;
+}
+
+/* ===========================
+   CARDS
+=========================== */
 
 .card{
     background:var(--surface);
