@@ -95,7 +95,7 @@ const projects = [
     image: portfolioImg,
     techs: ['Vue.js', 'CSS', 'JavaScript'],
     github: 'https://github.com/Rattori94/portfolio',
-    demo: ''
+    demo: 'https://portfolio-rafael-vettori.vercel.app/'
   },
 
   {
