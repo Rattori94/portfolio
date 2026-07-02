@@ -2,13 +2,14 @@
   <section id="contact" class="contact">
     <div class="container">
 
+      <!-- HEADER -->
       <div class="section-header fade-up">
         <span class="subtitle">CONTATO</span>
 
         <h2>Vamos conversar?</h2>
 
         <p>
-          Estou em busca da minha primeira oportunidade como Desenvolvedor
+          Estou em busca de uma oportunidade como Desenvolvedor
           Front-end. Se você procura alguém dedicado, comprometido com o
           aprendizado e apaixonado por tecnologia, será um prazer conversar.
         </p>
@@ -16,7 +17,7 @@
 
       <div class="contact-grid">
 
-        <!-- Informações -->
+        <!-- INFO -->
         <div class="contact-info card fade-up">
 
           <h3>Entre em contato</h3>
@@ -27,14 +28,14 @@
           </p>
 
           <div class="contact-item">
-            <span>📧</span>
+            <i class="fa-solid fa-envelope"></i>
             <a href="mailto:rafael.arcangelovettori@gmail.com">
               E-mail
             </a>
           </div>
 
           <div class="contact-item">
-            <span>💼</span>
+            <i class="fa-brands fa-linkedin"></i>
             <a
               href="https://www.linkedin.com/in/rafaelarcangelovettori"
               target="_blank"
@@ -45,7 +46,7 @@
           </div>
 
           <div class="contact-item">
-            <span>💻</span>
+            <i class="fa-brands fa-github"></i>
             <a
               href="https://github.com/Rattori94"
               target="_blank"
@@ -57,8 +58,9 @@
 
         </div>
 
-        <!-- Chamada -->
+        <!-- CARD -->
         <div class="contact-card fade-up">
+
           <h3>Por que trabalhar comigo?</h3>
 
           <ul>
@@ -74,6 +76,7 @@
           >
             Enviar e-mail
           </a>
+
         </div>
 
       </div>
@@ -87,10 +90,12 @@
 
 <style scoped>
 
+/* ===== SECTION ===== */
 .contact{
   padding:120px 0;
 }
 
+/* ===== HEADER ===== */
 .section-header{
   max-width:800px;
   margin:auto;
@@ -114,12 +119,14 @@
   line-height:1.8;
 }
 
+/* ===== GRID ===== */
 .contact-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:30px;
 }
 
+/* ===== INFO ===== */
 .contact-info{
   padding:40px;
 }
@@ -134,26 +141,32 @@
   margin-bottom:30px;
 }
 
+/* ===== ITEM ===== */
 .contact-item{
   display:flex;
   align-items:center;
-  gap:15px;
+  gap:12px;
+
   margin-bottom:20px;
 }
 
-.contact-item span{
-  font-size:24px;
+.contact-item i{
+  font-size:20px;
+  color:var(--secondary);
+  width:24px;
 }
 
 .contact-item a{
   color:var(--text);
   transition:.3s;
+  text-decoration:none;
 }
 
 .contact-item a:hover{
   color:var(--secondary);
 }
 
+/* ===== CARD ===== */
 .contact-card{
   background:linear-gradient(
     135deg,
@@ -182,15 +195,17 @@
   line-height:1.7;
 }
 
+/* ===== RESPONSIVO ===== */
 @media(max-width:900px){
 
-.contact-grid{
-  grid-template-columns:1fr;
+  .contact-grid{
+    grid-template-columns:1fr;
+  }
+
+  .section-header h2{
+    font-size:36px;
+  }
+
 }
 
-.section-header h2{
-  font-size:36px;
-}
-
-}
 </style>

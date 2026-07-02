@@ -3,37 +3,37 @@
 
     <div class="container">
 
-      <!-- Logo -->
-      <a href="#home" class="logo">
+      <!-- LOGO -->
+      <a href="#" class="logo" @click.prevent="scrollTo('home')">
         <span class="mark">&lt;/&gt;</span>
         Rafael A. Vettori
       </a>
 
-      <!-- Desktop nav -->
+      <!-- NAV -->
       <nav class="nav">
-        <a href="#home" :class="{ active: active === 'home' }">Home</a>
-        <a href="#about" :class="{ active: active === 'about' }">Sobre</a>
-        <a href="#skills" :class="{ active: active === 'skills' }">Skills</a>
-        <a href="#projects" :class="{ active: active === 'projects' }">Projetos</a>
-        <a href="#contact" :class="{ active: active === 'contact' }">Contato</a>
+        <a @click.prevent="scrollTo('home')" :class="{ active: active === 'home' }">Home</a>
+        <a @click.prevent="scrollTo('about')" :class="{ active: active === 'about' }">Sobre</a>
+        <a @click.prevent="scrollTo('skills')" :class="{ active: active === 'skills' }">Skills</a>
+        <a @click.prevent="scrollTo('projects')" :class="{ active: active === 'projects' }">Projetos</a>
+        <a @click.prevent="scrollTo('contact')" :class="{ active: active === 'contact' }">Contato</a>
       </nav>
 
-      <!-- Actions -->
+      <!-- ACTIONS -->
       <div class="actions">
 
         <button class="theme" @click="toggleTheme">
-          {{ theme === 'dark' ? '☀️' : '🌙' }}
+          <i class="fa-solid" :class="theme === 'dark' ? 'fa-sun' : 'fa-moon'"></i>
         </button>
 
         <button class="hamburger" @click="menuOpen = true">
-          ☰
+          <i class="fa-solid fa-bars"></i>
         </button>
 
       </div>
 
     </div>
 
-    <!-- Mobile Menu -->
+    <!-- MOBILE MENU -->
     <MobileMenu
       :open="menuOpen"
       @close="menuOpen = false"
@@ -51,26 +51,52 @@ const scrolled = ref(false)
 const active = ref('home')
 const theme = ref('dark')
 
-/* THEME */
+/* =========================
+   SCROLL SMOOTH
+========================= */
+const scrollTo = (id) => {
+  const el = document.getElementById(id)
+  if (!el) return
+
+  const offset = 80
+
+  const top = el.getBoundingClientRect().top + window.scrollY - offset
+
+  window.scrollTo({
+    top,
+    behavior: 'smooth'
+  })
+
+  menuOpen.value = false
+}
+
+/* =========================
+   THEME
+========================= */
 const toggleTheme = () => {
   theme.value = theme.value === 'dark' ? 'light' : 'dark'
   document.documentElement.setAttribute('data-theme', theme.value)
   localStorage.setItem('theme', theme.value)
 }
 
-/* SCROLL EFFECT */
+/* =========================
+   SCROLL LISTENER
+========================= */
 const handleScroll = () => {
   scrolled.value = window.scrollY > 20
 
-  const sections = ['home','about','skills','projects','contact']
+  const sections = ['home', 'about', 'skills', 'projects', 'contact']
+
+  const scrollPos = window.scrollY + 150
 
   for (const id of sections) {
     const el = document.getElementById(id)
     if (!el) continue
 
-    const rect = el.getBoundingClientRect()
-
-    if (rect.top <= 120 && rect.bottom >= 120) {
+    if (
+      el.offsetTop <= scrollPos &&
+      el.offsetTop + el.offsetHeight > scrollPos
+    ) {
       active.value = id
     }
   }
@@ -89,7 +115,6 @@ onMounted(() => {
   }
 
   window.addEventListener('scroll', handleScroll)
-
 })
 
 onUnmounted(() => {
@@ -99,26 +124,36 @@ onUnmounted(() => {
 
 <style scoped>
 
-/* NAVBAR BASE */
+/* =========================
+   NAVBAR BASE (FIX)
+========================= */
 .navbar {
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
-  z-index: 999;
+  z-index: 1000;
 
   padding: 18px 0;
-
   transition: 0.3s ease;
+
+  /* 🔥 CORREÇÃO: sempre visível no topo */
+  background: rgba(8, 11, 20, 0.35);
+  backdrop-filter: blur(10px);
 }
 
-/* GLASS EFFECT */
+/* =========================
+   SCROLLED STATE
+========================= */
 .scrolled {
-  background: rgba(8, 11, 20, 0.7);
+  background: rgba(8, 11, 20, 0.85);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
-/* CONTAINER */
+/* =========================
+   CONTAINER
+========================= */
 .container {
   width: min(1200px, 92%);
   margin: auto;
@@ -128,7 +163,9 @@ onUnmounted(() => {
   align-items: center;
 }
 
-/* LOGO */
+/* =========================
+   LOGO
+========================= */
 .logo {
   font-weight: 700;
   color: var(--text);
@@ -142,15 +179,17 @@ onUnmounted(() => {
   color: var(--secondary);
 }
 
-/* NAV */
+/* =========================
+   NAV
+========================= */
 .nav {
   display: flex;
   gap: 26px;
 }
 
 .nav a {
+  cursor: pointer;
   color: var(--text-muted);
-  text-decoration: none;
   font-weight: 500;
   transition: 0.3s;
   position: relative;
@@ -160,7 +199,6 @@ onUnmounted(() => {
   color: var(--text);
 }
 
-/* ACTIVE LINK */
 .active {
   color: var(--secondary) !important;
 }
@@ -175,14 +213,15 @@ onUnmounted(() => {
   background: var(--secondary);
 }
 
-/* ACTIONS */
+/* =========================
+   ACTIONS
+========================= */
 .actions {
   display: flex;
   gap: 12px;
   align-items: center;
 }
 
-/* BUTTONS */
 .theme,
 .hamburger {
   background: transparent;
@@ -192,14 +231,14 @@ onUnmounted(() => {
   color: var(--text);
 }
 
-/* MOBILE */
+/* =========================
+   MOBILE
+========================= */
 .hamburger {
   display: none;
 }
 
-/* RESPONSIVE */
 @media (max-width: 900px) {
-
   .nav {
     display: none;
   }
@@ -207,14 +246,6 @@ onUnmounted(() => {
   .hamburger {
     display: block;
   }
-}
-
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
 }
 
 </style>
