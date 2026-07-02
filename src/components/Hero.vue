@@ -48,7 +48,7 @@
           </a>
 
           <a
-            href="/curriculo_rafael.pdf"
+            href="/curriculo_rafaelvettori.pdf"
             class="btn outline"
             download
           >
