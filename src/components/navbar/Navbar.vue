@@ -9,7 +9,7 @@
         Rafael A. Vettori
       </a>
 
-      <!-- NAV -->
+      <!-- DESKTOP NAV -->
       <nav class="nav">
         <a @click.prevent="scrollTo('home')" :class="{ active: active === 'home' }">Home</a>
         <a @click.prevent="scrollTo('about')" :class="{ active: active === 'about' }">Sobre</a>
@@ -33,26 +33,62 @@
 
     </div>
 
-    <!-- MOBILE MENU -->
-    <MobileMenu
-      :open="menuOpen"
-      @close="menuOpen = false"
-    />
+    <!-- MOBILE MENU (Apple-style overlay + animation) -->
+    <Transition name="overlay">
+      <div
+        v-if="menuOpen"
+        class="mobile-overlay"
+        @click.self="menuOpen = false"
+      >
+        <Transition name="sheet">
+          <div v-if="menuOpen" class="mobile-menu">
+
+            <!-- CLOSE -->
+            <button class="close-btn" @click="menuOpen = false">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- LINKS (stagger via CSS) -->
+            <nav class="mobile-links">
+
+              <a
+                v-for="(item, i) in sections"
+                :key="item.id"
+                :style="{ '--i': i }"
+                :class="{ active: active === item.id }"
+                @click="go(item.id)"
+              >
+                {{ item.label }}
+              </a>
+
+            </nav>
+
+          </div>
+        </Transition>
+      </div>
+    </Transition>
 
   </header>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
-import MobileMenu from './MobileMenu.vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
 
 const menuOpen = ref(false)
 const scrolled = ref(false)
 const active = ref('home')
 const theme = ref('dark')
 
+const sections = [
+  { id: 'home', label: 'Home' },
+  { id: 'about', label: 'Sobre' },
+  { id: 'skills', label: 'Skills' },
+  { id: 'projects', label: 'Projetos' },
+  { id: 'contact', label: 'Contato' }
+]
+
 /* =========================
-   SCROLL SMOOTH
+   SCROLL TO SECTION
 ========================= */
 const scrollTo = (id) => {
   const el = document.getElementById(id)
@@ -70,6 +106,11 @@ const scrollTo = (id) => {
   menuOpen.value = false
 }
 
+/* MOBILE NAV GO */
+const go = (id) => {
+  scrollTo(id)
+}
+
 /* =========================
    THEME
 ========================= */
@@ -80,27 +121,32 @@ const toggleTheme = () => {
 }
 
 /* =========================
-   SCROLL LISTENER
+   SCROLL TRACKING
 ========================= */
 const handleScroll = () => {
   scrolled.value = window.scrollY > 20
 
-  const sections = ['home', 'about', 'skills', 'projects', 'contact']
-
   const scrollPos = window.scrollY + 150
 
-  for (const id of sections) {
-    const el = document.getElementById(id)
+  for (const s of sections) {
+    const el = document.getElementById(s.id)
     if (!el) continue
 
     if (
       el.offsetTop <= scrollPos &&
       el.offsetTop + el.offsetHeight > scrollPos
     ) {
-      active.value = id
+      active.value = s.id
     }
   }
 }
+
+/* =========================
+   BODY LOCK (important UX)
+========================= */
+watch(menuOpen, (open) => {
+  document.body.style.overflow = open ? 'hidden' : ''
+})
 
 /* INIT */
 onMounted(() => {
@@ -119,13 +165,14 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
+  document.body.style.overflow = ''
 })
 </script>
 
 <style scoped>
 
 /* =========================
-   NAVBAR BASE (FIX)
+   NAVBAR
 ========================= */
 .navbar {
   position: fixed;
@@ -135,16 +182,13 @@ onUnmounted(() => {
   z-index: 1000;
 
   padding: 18px 0;
-  transition: 0.3s ease;
 
-  /* 🔥 CORREÇÃO: sempre visível no topo */
   background: rgba(8, 11, 20, 0.35);
   backdrop-filter: blur(10px);
+
+  transition: 0.3s ease;
 }
 
-/* =========================
-   SCROLLED STATE
-========================= */
 .scrolled {
   background: rgba(8, 11, 20, 0.85);
   backdrop-filter: blur(16px);
@@ -171,7 +215,6 @@ onUnmounted(() => {
   color: var(--text);
   display: flex;
   gap: 10px;
-  align-items: center;
   text-decoration: none;
 }
 
@@ -180,7 +223,7 @@ onUnmounted(() => {
 }
 
 /* =========================
-   NAV
+   DESKTOP NAV
 ========================= */
 .nav {
   display: flex;
@@ -190,9 +233,8 @@ onUnmounted(() => {
 .nav a {
   cursor: pointer;
   color: var(--text-muted);
-  font-weight: 500;
-  transition: 0.3s;
   position: relative;
+  transition: .3s;
 }
 
 .nav a:hover {
@@ -219,7 +261,6 @@ onUnmounted(() => {
 .actions {
   display: flex;
   gap: 12px;
-  align-items: center;
 }
 
 .theme,
@@ -227,17 +268,110 @@ onUnmounted(() => {
   background: transparent;
   border: none;
   cursor: pointer;
-  font-size: 18px;
   color: var(--text);
 }
 
 /* =========================
-   MOBILE
+   MOBILE OVERLAY (Apple style blur)
 ========================= */
-.hamburger {
-  display: none;
+.mobile-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.35);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  z-index: 2000;
 }
 
+/* OVERLAY FADE */
+.overlay-enter-active,
+.overlay-leave-active {
+  transition: opacity .35s ease;
+}
+
+.overlay-enter-from,
+.overlay-leave-to {
+  opacity: 0;
+}
+
+/* =========================
+   MOBILE SHEET
+========================= */
+.mobile-menu {
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  width: 320px;
+  height: 100%;
+
+  background: var(--surface);
+  padding: 28px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* SLIDE ANIMATION */
+.sheet-enter-active,
+.sheet-leave-active {
+  transition: transform .35s cubic-bezier(.2,.9,.2,1), opacity .35s;
+}
+
+.sheet-enter-from,
+.sheet-leave-to {
+  transform: translateX(40px);
+  opacity: 0;
+}
+
+/* CLOSE BUTTON */
+.close-btn {
+  align-self: flex-end;
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+/* =========================
+   MOBILE LINKS (STAGGER ANIMATION)
+========================= */
+.mobile-links {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  gap: 18px;
+}
+
+.mobile-links a {
+  color: var(--text-muted);
+  font-size: 18px;
+  cursor: pointer;
+
+  opacity: 0;
+  transform: translateY(10px);
+
+  animation: fadeUp .4s ease forwards;
+  animation-delay: calc(var(--i) * 0.06s);
+}
+
+.mobile-links a.active {
+  color: var(--secondary);
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
 @media (max-width: 900px) {
   .nav {
     display: none;
