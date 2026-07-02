@@ -58,61 +58,45 @@
       </div>
 
     </div>
-
+    
     <!-- MOBILE MENU -->
-    <Transition name="overlay">
-      <div
-        v-if="menuOpen"
-        class="mobile-overlay"
-        @click.self="closeMenu"
-      >
+<teleport to="body">
+  <Transition name="overlay">
+    <div
+      v-if="menuOpen"
+      class="mobile-overlay"
+      @click.self="closeMenu"
+    >
+      <Transition name="sheet">
+        <aside class="mobile-menu">
 
-        <Transition name="sheet">
-          <aside class="mobile-menu">
+          <div class="mobile-header">
 
-            <div class="mobile-header">
-
-              <div class="mobile-brand">
-
-                <img
-                  src="../../favicon/favicon.png"
-                  class="logo-img"
-                  alt="Logo"
-                />
-
-                <span>Rafael A. Vettori</span>
-
-              </div>
-
-              <button
-                class="close-btn"
-                @click="closeMenu"
-                aria-label="Fechar menu"
-              >
-                <i class="fa-solid fa-xmark"></i>
-              </button>
-
+            <div class="mobile-brand">
+              <img src="../../favicon/favicon.png" class="logo-img" />
+              <span>Rafael A. Vettori</span>
             </div>
 
-            <nav class="mobile-links">
+            <button class="close-btn" @click="closeMenu">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
 
-              <a
-                v-for="(item,index) in sections"
-                :key="item.id"
-                :style="{ '--delay': index }"
-                :class="{ active: active === item.id }"
-                @click="go(item.id)"
-              >
-                {{ item.label }}
-              </a>
+          </div>
 
-            </nav>
+          <nav class="mobile-links">
+            <a v-for="(item,index) in sections"
+               :key="item.id"
+               :style="{ '--delay': index }"
+               @click="go(item.id)">
+              {{ item.label }}
+            </a>
+          </nav>
 
-          </aside>
-        </Transition>
-
-      </div>
-    </Transition>
+        </aside>
+      </Transition>
+    </div>
+  </Transition>
+</teleport>
 
   </header>
 </template>
@@ -275,7 +259,7 @@ onUnmounted(() => {
   top:0;
   left:0;
   width:100%;
-  z-index:10000;
+  z-index: var(--z-navbar);
 
   padding:18px 0;
 
@@ -456,7 +440,7 @@ onUnmounted(() => {
   backdrop-filter:blur(18px);
   -webkit-backdrop-filter:blur(18px);
 
-  z-index:2000;
+  z-index: var(--z-overlay);z-index: var(--z-navbar);
 }
 
 /* =========================

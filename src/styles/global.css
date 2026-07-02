@@ -126,3 +126,10 @@ section{
     --z-overlay: 9998;
     --z-menu: 9999;
 }
+
+html,
+body,
+#app {
+    height: 100%;
+    overflow: visible;
+}
