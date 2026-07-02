@@ -1,65 +1,105 @@
+```vue
 <template>
   <header class="navbar" :class="{ scrolled }">
-
     <div class="container">
 
       <!-- LOGO -->
       <a href="#" class="logo" @click.prevent="scrollTo('home')">
-
-        <img src="../../favicon/favicon.png" alt="Logo" class="logo-img" />
+        <img
+          src="../../favicon/favicon.png"
+          alt="Logo Rafael Vettori"
+          class="logo-img"
+        />
 
         <span class="logo-text">
           Rafael A. Vettori
         </span>
-
       </a>
 
       <!-- DESKTOP NAV -->
       <nav class="nav">
-        <a @click.prevent="scrollTo('home')" :class="{ active: active === 'home' }">Home</a>
-        <a @click.prevent="scrollTo('about')" :class="{ active: active === 'about' }">Sobre</a>
-        <a @click.prevent="scrollTo('skills')" :class="{ active: active === 'skills' }">Skills</a>
-        <a @click.prevent="scrollTo('projects')" :class="{ active: active === 'projects' }">Projetos</a>
-        <a @click.prevent="scrollTo('contact')" :class="{ active: active === 'contact' }">Contato</a>
+        <a
+          v-for="item in sections"
+          :key="item.id"
+          @click.prevent="scrollTo(item.id)"
+          :class="{ active: active === item.id }"
+        >
+          {{ item.label }}
+        </a>
       </nav>
 
       <!-- ACTIONS -->
       <div class="actions">
 
-        <button class="theme" @click="toggleTheme">
-          <i class="fa-solid" :class="theme === 'dark' ? 'fa-sun' : 'fa-moon'"></i>
+        <button
+          class="theme"
+          @click="toggleTheme"
+          aria-label="Alternar tema"
+        >
+          <i
+            class="fa-solid"
+            :class="theme === 'dark'
+              ? 'fa-sun'
+              : 'fa-moon'"
+          ></i>
         </button>
 
-        <button class="hamburger" @click="menuOpen = true">
-          <i class="fa-solid fa-bars"></i>
+        <button
+          class="hamburger"
+          @click="toggleMenu"
+          aria-label="Abrir menu"
+        >
+          <i
+            class="fa-solid"
+            :class="menuOpen ? 'fa-xmark' : 'fa-bars'"
+          ></i>
         </button>
 
       </div>
 
     </div>
 
-    <!-- MOBILE MENU OVERLAY -->
+    <!-- MOBILE MENU -->
     <Transition name="overlay">
       <div
         v-if="menuOpen"
         class="mobile-overlay"
-        @click.self="menuOpen = false"
+        @click.self="closeMenu"
       >
+
         <Transition name="sheet">
-          <div v-if="menuOpen" class="mobile-menu">
+          <aside class="mobile-menu">
 
-            <!-- CLOSE -->
-            <button class="close-btn" @click="menuOpen = false">
-              <i class="fa-solid fa-xmark"></i>
-            </button>
+            <div class="mobile-header">
 
-            <!-- LINKS -->
+              <div class="mobile-brand">
+
+                <img
+                  src="../../favicon/favicon.png"
+                  class="logo-img"
+                  alt="Logo"
+                />
+
+                <span>Rafael A. Vettori</span>
+
+              </div>
+
+              <button
+                class="close-btn"
+                @click="closeMenu"
+                aria-label="Fechar menu"
+              >
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+
+            </div>
+
             <nav class="mobile-links">
 
               <a
-                v-for="(item, i) in sections"
+                v-for="(item,index) in sections"
                 :key="item.id"
-                :style="{ '--i': i }"
+                :style="{ '--delay': index }"
                 :class="{ active: active === item.id }"
                 @click="go(item.id)"
               >
@@ -68,8 +108,9 @@
 
             </nav>
 
-          </div>
+          </aside>
         </Transition>
+
       </div>
     </Transition>
 
@@ -77,7 +118,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch } from 'vue'
+import {
+  ref,
+  watch,
+  onMounted,
+  onUnmounted
+} from 'vue'
 
 const menuOpen = ref(false)
 const scrolled = ref(false)
@@ -92,313 +138,463 @@ const sections = [
   { id: 'contact', label: 'Contato' }
 ]
 
-/* =========================
-   SCROLL TO SECTION
-========================= */
+const toggleMenu = () => {
+  menuOpen.value = !menuOpen.value
+}
+
+const closeMenu = () => {
+  menuOpen.value = false
+}
+
+const go = (id) => {
+  scrollTo(id)
+  closeMenu()
+}
+
 const scrollTo = (id) => {
+
   const el = document.getElementById(id)
+
   if (!el) return
 
   const offset = 80
 
-  const top = el.getBoundingClientRect().top + window.scrollY - offset
+  const top =
+    el.getBoundingClientRect().top +
+    window.scrollY -
+    offset
 
   window.scrollTo({
     top,
     behavior: 'smooth'
   })
 
-  menuOpen.value = false
+  closeMenu()
 }
 
-const go = (id) => {
-  scrollTo(id)
-}
-
-/* =========================
-   THEME
-========================= */
 const toggleTheme = () => {
-  theme.value = theme.value === 'dark' ? 'light' : 'dark'
-  document.documentElement.setAttribute('data-theme', theme.value)
-  localStorage.setItem('theme', theme.value)
+
+  theme.value =
+    theme.value === 'dark'
+      ? 'light'
+      : 'dark'
+
+  document.documentElement.setAttribute(
+    'data-theme',
+    theme.value
+  )
+
+  localStorage.setItem(
+    'theme',
+    theme.value
+  )
 }
 
-/* =========================
-   SCROLL TRACKING
-========================= */
 const handleScroll = () => {
+
   scrolled.value = window.scrollY > 20
 
   const scrollPos = window.scrollY + 150
 
-  for (const s of sections) {
-    const el = document.getElementById(s.id)
+  for (const item of sections) {
+
+    const el = document.getElementById(item.id)
+
     if (!el) continue
 
     if (
       el.offsetTop <= scrollPos &&
       el.offsetTop + el.offsetHeight > scrollPos
     ) {
-      active.value = s.id
+      active.value = item.id
     }
   }
 }
 
-/* BODY LOCK */
-watch(menuOpen, (open) => {
-  document.body.style.overflow = open ? 'hidden' : ''
+watch(menuOpen, (value) => {
+  document.body.style.overflow = value ? 'hidden' : ''
 })
 
+const handleKey = (e) => {
+  if (e.key === 'Escape') {
+    closeMenu()
+  }
+}
+
 onMounted(() => {
-  const saved = localStorage.getItem('theme')
+
+  const saved =
+    localStorage.getItem('theme')
 
   if (saved) {
     theme.value = saved
-    document.documentElement.setAttribute('data-theme', saved)
   }
 
-  window.addEventListener('scroll', handleScroll)
+  document.documentElement.setAttribute(
+    'data-theme',
+    theme.value
+  )
+
+  window.addEventListener(
+    'scroll',
+    handleScroll
+  )
+
+  window.addEventListener(
+    'keydown',
+    handleKey
+  )
+
+  handleScroll()
 })
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
+
+  window.removeEventListener(
+    'scroll',
+    handleScroll
+  )
+
+  window.removeEventListener(
+    'keydown',
+    handleKey
+  )
+
   document.body.style.overflow = ''
 })
 </script>
 
+```vue
 <style scoped>
 
 /* =========================
    NAVBAR
 ========================= */
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
+.navbar{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  z-index:1000;
 
-  padding: 18px 0;
+  padding:18px 0;
 
-  background: rgba(8, 11, 20, 0.35);
-  backdrop-filter: blur(10px);
-  transition: .3s ease;
+  background:rgba(8,11,20,.35);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+
+  transition:
+    background .35s,
+    backdrop-filter .35s,
+    border-color .35s,
+    box-shadow .35s;
 }
 
-.scrolled {
-  background: rgba(8, 11, 20, 0.85);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+.scrolled{
+  background:rgba(8,11,20,.82);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  box-shadow:0 10px 35px rgba(0,0,0,.18);
 }
 
 /* =========================
    CONTAINER
 ========================= */
-.container {
-  width: min(1200px, 92%);
-  margin: auto;
+.container{
+  width:min(1200px,92%);
+  margin:auto;
 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
 
 /* =========================
    LOGO
 ========================= */
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
 
-  text-decoration: none;
-  font-weight: 700;
-  color: var(--text);
+  text-decoration:none;
+  color:var(--text);
+  font-weight:700;
 }
 
-.logo-img {
-  width: 34px;
-  height: 34px;
-  object-fit: contain;
-  transition: transform .3s ease;
+.logo-img{
+  width:38px;
+  height:38px;
+  object-fit:contain;
+
+  transition:
+    transform .35s,
+    filter .35s;
 }
 
-.logo:hover .logo-img {
-  transform: rotate(-6deg) scale(1.05);
+.logo:hover .logo-img{
+  transform:rotate(-8deg) scale(1.08);
 }
 
-.logo-text {
-  display: inline;
+.logo-text{
+  transition:.3s;
 }
 
 /* =========================
    DESKTOP NAV
 ========================= */
-.nav {
-  display: flex;
-  gap: 26px;
+.nav{
+  display:flex;
+  align-items:center;
+  gap:30px;
 }
 
-.nav a {
-  cursor: pointer;
-  color: var(--text-muted);
-  position: relative;
-  transition: .3s;
+.nav a{
+  position:relative;
+
+  color:var(--text-muted);
+
+  cursor:pointer;
+
+  transition:.3s;
 }
 
-.nav a:hover {
-  color: var(--text);
+.nav a:hover{
+  color:var(--text);
 }
 
-.active {
-  color: var(--secondary) !important;
+.nav a.active{
+  color:var(--secondary);
 }
 
-.active::after {
-  content: "";
-  position: absolute;
-  bottom: -6px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: var(--secondary);
+.nav a.active::after{
+  content:"";
+
+  position:absolute;
+
+  left:0;
+  bottom:-8px;
+
+  width:100%;
+  height:2px;
+
+  background:var(--secondary);
+
+  border-radius:999px;
 }
 
 /* =========================
    ACTIONS
 ========================= */
-.actions {
-  display: flex;
-  gap: 12px;
+.actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
 }
 
 .theme,
-.hamburger {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  color: var(--text);
+.hamburger,
+.close-btn{
+
+  width:44px;
+  height:44px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:12px;
+
+  border:1px solid var(--border);
+
+  background:rgba(255,255,255,.05);
+
+  color:var(--text);
+
+  cursor:pointer;
+
+  transition:
+    transform .25s,
+    background .25s,
+    border-color .25s;
+}
+
+.theme:hover,
+.hamburger:hover,
+.close-btn:hover{
+
+  transform:translateY(-2px);
+
+  background:rgba(124,58,237,.15);
+
+  border-color:var(--secondary);
+}
+
+.theme i,
+.hamburger i,
+.close-btn i{
+  font-size:18px;
 }
 
 /* =========================
-   MOBILE
+   HAMBURGER
 ========================= */
-.hamburger {
-  display: none;
-}
-
-@media (max-width: 900px) {
-  .nav {
-    display: none;
-  }
-
-  .hamburger {
-    display: block;
-  }
-
-  .logo-text {
-    display: none;
-  }
+.hamburger{
+  display:none;
 }
 
 /* =========================
-   OVERLAY (Apple blur)
+   OVERLAY
 ========================= */
-.mobile-overlay {
-  position: fixed;
-  inset: 0;
+.mobile-overlay{
 
-  background: rgba(0,0,0,.35);
-  backdrop-filter: blur(18px);
+  position:fixed;
+  inset:0;
 
-  z-index: 2000;
+  background:rgba(0,0,0,.35);
+
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+
+  z-index:2000;
 }
 
-/* fade */
+/* =========================
+   MENU
+========================= */
+.mobile-menu{
+
+  position:absolute;
+
+  right:0;
+  top:0;
+
+  width:min(340px,90vw);
+  height:100%;
+
+  padding:28px;
+
+  background:var(--surface);
+
+  border-left:1px solid var(--border);
+
+  display:flex;
+  flex-direction:column;
+}
+
+.mobile-header{
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  margin-bottom:40px;
+}
+
+.mobile-brand{
+
+  display:flex;
+  align-items:center;
+  gap:12px;
+
+  color:var(--text);
+  font-weight:700;
+}
+
+/* =========================
+   LINKS
+========================= */
+.mobile-links{
+
+  display:flex;
+  flex-direction:column;
+
+  gap:22px;
+}
+
+.mobile-links a{
+
+  color:var(--text-muted);
+
+  cursor:pointer;
+
+  font-size:18px;
+
+  opacity:0;
+
+  transform:translateX(24px);
+
+  animation:slideLinks .45s ease forwards;
+  animation-delay:calc(var(--delay) * 70ms);
+
+  transition:.25s;
+}
+
+.mobile-links a:hover{
+  color:var(--text);
+}
+
+.mobile-links a.active{
+  color:var(--secondary);
+}
+
+/* =========================
+   ANIMAÇÕES
+========================= */
+
 .overlay-enter-active,
-.overlay-leave-active {
-  transition: opacity .3s ease;
+.overlay-leave-active{
+  transition:opacity .35s ease;
 }
 
 .overlay-enter-from,
-.overlay-leave-to {
-  opacity: 0;
+.overlay-leave-to{
+  opacity:0;
 }
 
-/* =========================
-   SHEET
-========================= */
-.mobile-menu {
-  position: absolute;
-  right: 0;
-  top: 0;
-
-  width: 320px;
-  height: 100%;
-
-  background: var(--surface);
-  padding: 28px;
-
-  display: flex;
-  flex-direction: column;
-}
-
-/* slide */
 .sheet-enter-active,
-.sheet-leave-active {
-  transition: transform .35s cubic-bezier(.2,.9,.2,1), opacity .35s;
+.sheet-leave-active{
+  transition:
+    transform .35s cubic-bezier(.2,.9,.2,1),
+    opacity .35s;
 }
 
 .sheet-enter-from,
-.sheet-leave-to {
-  transform: translateX(40px);
-  opacity: 0;
+.sheet-leave-to{
+  transform:translateX(80px);
+  opacity:0;
 }
 
-/* =========================
-   CLOSE BUTTON
-========================= */
-.close-btn {
-  align-self: flex-end;
-  background: transparent;
-  border: none;
-  font-size: 22px;
-  color: var(--text);
-  cursor: pointer;
-}
+@keyframes slideLinks{
 
-/* =========================
-   MOBILE LINKS (STAGGER)
-========================= */
-.mobile-links {
-  display: flex;
-  flex-direction: column;
-  margin-top: 30px;
-  gap: 18px;
-}
+  to{
 
-.mobile-links a {
-  color: var(--text-muted);
-  font-size: 18px;
-  cursor: pointer;
+    opacity:1;
 
-  opacity: 0;
-  transform: translateY(10px);
+    transform:translateX(0);
 
-  animation: fadeUp .4s ease forwards;
-  animation-delay: calc(var(--i) * 0.06s);
-}
-
-.mobile-links a.active {
-  color: var(--secondary);
-}
-
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
+
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media(max-width:900px){
+
+  .nav{
+    display:none;
+  }
+
+  .hamburger{
+    display:flex;
+  }
+
+  .logo-text{
+    display:none;
+  }
+
 }
 
 </style>
