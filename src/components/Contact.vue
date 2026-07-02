@@ -64,10 +64,25 @@
           <h3>Por que trabalhar comigo?</h3>
 
           <ul>
-            <li>✔️ Comprometimento com qualidade e organização.</li>
-            <li>✔️ Facilidade para aprender novas tecnologias.</li>
-            <li>✔️ Experiência prática em projetos com Vue.js, JavaScript e CSS.</li>
-            <li>✔️ Interesse em crescer junto com a equipe.</li>
+            <li>
+              <i class="fa-solid fa-circle-check"></i>
+              Comprometimento com qualidade e organização.
+            </li>
+
+            <li>
+              <i class="fa-solid fa-circle-check"></i>
+              Facilidade para aprender novas tecnologias.
+            </li>
+
+            <li>
+              <i class="fa-solid fa-circle-check"></i>
+              Experiência prática em projetos com Vue.js, JavaScript e CSS.
+            </li>
+
+            <li>
+              <i class="fa-solid fa-circle-check"></i>
+              Interesse em crescer junto com a equipe.
+            </li>
           </ul>
 
           <a
@@ -146,7 +161,6 @@
   display:flex;
   align-items:center;
   gap:12px;
-
   margin-bottom:20px;
 }
 
@@ -190,9 +204,18 @@
 }
 
 .contact-card li{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+
   margin-bottom:15px;
   color:var(--text-muted);
   line-height:1.7;
+}
+
+.contact-card li i{
+  color:var(--secondary);
+  margin-top:3px;
 }
 
 /* ===== RESPONSIVO ===== */
