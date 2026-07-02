@@ -40,7 +40,7 @@ const close = () => {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.6);
-  z-index: 9998;
+  z-index: var(--z-overlay);
 }
 
 .mobile-menu {
@@ -57,7 +57,7 @@ const close = () => {
 
   transition: 0.3s ease;
 
-  z-index: 9999;
+  z-index: var(--z-menu);
 
   display: flex;
   flex-direction: column;

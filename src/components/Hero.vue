@@ -108,6 +108,7 @@
   align-items: center;
   overflow: hidden;
   padding-top: 90px;
+  z-index: var(--z-base);
 }
 
 /* GRID */
