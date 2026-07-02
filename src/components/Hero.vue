@@ -72,6 +72,7 @@
           <span><i class="devicon-typescript-plain"></i> TypeScript</span>
           <span><i class="devicon-npm-original-wordmark"></i> Node</span>
           <span><i class="devicon-babel-plain"></i> Babel</span>
+          <span><i class="devicon-bootstrap-plain"></i> Bootstrap</span>
 
 
         </div>
