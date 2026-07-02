@@ -1,15 +1,18 @@
 <template>
-  <Navbar />
+  <div class="layout">
+    <Navbar />
 
-  <main>
-    <router-view />
-  </main>
+    <main class="content">
+      <router-view />
+    </main>
 
-  <Footer />
+    <Footer />
+  </div>
 </template>
 
 <script setup>
-
+import Navbar from '../components/Navbar.vue'
+import Footer from '../components/Footer.vue'
 </script>
 
 <style scoped>
@@ -21,8 +24,5 @@
 
 .content {
   flex: 1;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px;
 }
 </style>
