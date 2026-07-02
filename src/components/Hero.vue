@@ -58,7 +58,6 @@
 
         </div>
 
-        <!-- TECHS -->
         <div class="techs">
 
           <span><i class="fa-brands fa-vuejs"></i> Vue.js</span>
@@ -69,7 +68,7 @@
           <span><i class="fa-brands fa-github"></i> GitHub</span>
           <span><i class="devicon-sass-original"></i> Sass</span>
           <span><i class="devicon-gulp-plain"></i> Gulp</span>
-          <span><<i class="devicon-vercel-original"></i> Vercel</span>
+          <span><i class="devicon-vercel-original"></i> Vercel</span>
           <span><i class="devicon-typescript-plain"></i> TypeScript</span>
           <span><i class="devicon-npm-original-wordmark"></i> Node</span>
           <span><i class="devicon-babel-plain"></i> Babel</span>
