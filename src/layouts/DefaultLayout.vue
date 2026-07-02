@@ -1,15 +1,15 @@
 <template>
-  <div class="layout">
-    <Navbar />
+  <Navbar />
 
-    <main class="content">
-      <slot />
-    </main>
-  </div>
+  <main>
+    <router-view />
+  </main>
+
+  <Footer />
 </template>
 
 <script setup>
-import Navbar from '../components/Navbar.vue'
+
 </script>
 
 <style scoped>
