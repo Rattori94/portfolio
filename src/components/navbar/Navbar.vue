@@ -275,7 +275,7 @@ onUnmounted(() => {
   top:0;
   left:0;
   width:100%;
-  z-index:1000;
+  z-index:10000;
 
   padding:18px 0;
 
@@ -596,5 +596,6 @@ onUnmounted(() => {
   }
 
 }
+
 
 </style>

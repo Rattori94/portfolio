@@ -113,3 +113,8 @@ section{
     border-radius:var(--radius);
     padding:28px;
 }
+
+#app {
+    position: relative;
+    z-index: 0;
+}

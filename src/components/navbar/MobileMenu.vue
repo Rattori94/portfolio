@@ -39,10 +39,8 @@ const close = () => {
 .overlay {
   position: fixed;
   inset: 0;
-
   background: rgba(0,0,0,0.6);
-
-  z-index: 998;
+  z-index: 9998;
 }
 
 .mobile-menu {
@@ -59,7 +57,7 @@ const close = () => {
 
   transition: 0.3s ease;
 
-  z-index: 999;
+  z-index: 9999;
 
   display: flex;
   flex-direction: column;
