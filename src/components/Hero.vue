@@ -170,12 +170,45 @@
 .buttons a {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
+  text-decoration: none;
 }
 
-.outline {
+/* Botão principal */
+.btn {
+  padding: 14px 28px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  color: #fff !important;
+  border: none;
+  font-weight: 600;
+  transition: all .3s ease;
+}
+
+.btn:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+  color: #fff !important;
+}
+
+/* Botão outline */
+.btn.outline {
   background: transparent;
   border: 2px solid var(--primary);
+  color: var(--primary) !important;
+}
+
+.btn.outline:hover {
+  background: var(--primary);
+  color: #fff !important;
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+}
+
+.btn i,
+.btn.outline i {
+  color: inherit;
 }
 
 /* TECHS */
