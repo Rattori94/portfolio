@@ -118,3 +118,11 @@ section{
     position: relative;
     z-index: 0;
 }
+
+:root {
+    --z-base: 1;
+    --z-hero: 10;
+    --z-navbar: 10000;
+    --z-overlay: 9998;
+    --z-menu: 9999;
+}
